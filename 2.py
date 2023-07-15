@@ -2,7 +2,15 @@ from functools import wraps
 
 
 def cls_method_decorator(param: int):
-    raise NotImplementedError
+    def decorator(cls_method):
+        @wraps(cls_method)
+        def wrapper(self, *args, **kwargs):
+            self.increment_var(param)
+            return cls_method(self, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 class SomeClass:
@@ -33,7 +41,7 @@ class SomeClass:
     """
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cls = SomeClass(20)
     cls.print_var()
 

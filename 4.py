@@ -3,18 +3,26 @@ import json
 
 
 def count_questions(data: dict):
-    # вывести количество вопросов (questions)
-    raise NotImplementedError
+    question_count = 0
+    for round_data in data["game"]["rounds"]:
+        question_count += len(round_data["questions"])
+    print(f"Total number of questions: {question_count}")
 
 
 def print_right_answers(data: dict):
-    # вывести все правильные ответы (correct_answer)
-    raise NotImplementedError
+    correct_answers = []
+    for round_data in data["game"]["rounds"]:
+        for question in round_data["questions"]:
+            correct_answers.append(question["correct_answer"])
+    print(f"Correct answers: {correct_answers}")
 
 
 def print_max_answer_time(data: dict):
-    # вывести максимальное время ответа (time_to_answer)
-    raise NotImplementedError
+    max_time = 0
+    for round_data in data["game"]["rounds"]:
+        for question in round_data["questions"]:
+            max_time = max(max_time, question.get("time_to_answer", 0))
+    print(f"Maximum answer time: {max_time}")
 
 
 def main(filename):
@@ -25,7 +33,10 @@ def main(filename):
     print_max_answer_time(data)
 
 
-if __name__ == '__main__':
-    # передать имя файла из аргументов командной строки
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python 4.py <filename>")
+        sys.exit(1)
 
+    filename = sys.argv[1]
     main(filename)
